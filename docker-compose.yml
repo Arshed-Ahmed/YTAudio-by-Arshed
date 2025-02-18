@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend  # Adjust to the path where your Django project is
+    container_name: backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"  # Map backend port to local machine port
+    environment:
+      - DEBUG=True
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend  # Adjust to the path where your React project is
+    container_name: frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"  # Map frontend port to local machine port
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    driver: bridge
